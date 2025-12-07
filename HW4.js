@@ -461,7 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // fetch api health tips
 function getHealthTip() {
-  fetch("https://api.adviceslip.com/advice")
+  fetch("https://odphp.health.gov/myhealthfinder/api/v4/itemlist.json?Type=topic")
     .then(res => res.json())
     .then(data => {
       document.getElementById("healthTip").innerText = data.slip.advice;
