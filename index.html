@@ -25,9 +25,19 @@
                 document.getElementById("today").innerHTML = dt.toLocaleDateString();
             </script>
             <hr>
+            <!--welcome message for name-->
+<center>
+    <span id="welcome1"></span>
+    <span id="welcome2"></span>
+</center>
+<!--iframe addition-->
+<div class="iframe-container">
+    <iframe class="frame" src="https://charityweek.com/" frameborder="0"></iframe>
+</div>
+
             <hr>
             <h2><b>Patient Intake Form</b></h2>
-        </div>
+        </div> 
     </header>
     <form id="signup" name="registration" action="">
         <table width="40%">
@@ -335,7 +345,19 @@
                     <span class="error" id="pword2-error"></span>
                 </td>
             </tr>
-
+<tr>
+    <td class="td1">
+        <label for="remember-me">Remember Me:</label>
+    </td>
+    <td>
+        <input
+            type="checkbox"
+            id="remember-me"
+            name="remember-me"
+            checked
+        />
+    </td>
+</tr>
             
             <tr>
                 <td>
@@ -345,6 +367,7 @@
                     <input type="reset" value="Clear and Start Over" onclick="removeReview()">
                     <input type="button" name="review" id="review" value="Review" onclick="reviewInput()">
                     <input type="button" name="validate" id="validate" value="Validate" style="font-family: 'optima', sans-serif;" onclick="validateEverything()">
+						<p id="healthTip"></p> <button onclick="getHealthTip()">Get Health Tip</button>
 
                 </td>
             </tr>
