@@ -120,7 +120,7 @@ table { width: 100%; }
     top: 30%;
     right: 15px;
     width: 25%;
-    height: 100%;
+    height: auto;
     overflow: hidden;
     box-sizing: border-box;
 }
