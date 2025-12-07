@@ -341,6 +341,44 @@ function validateEverything() {
      }
  }
 
+//cookie for remembering information on form//
+function setCookie(name, cvalue, expiryDays) {
+    var day = new Date();
+    day.setTime(day.getTime() + (expiryDays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + day.toUTCString();
+    document.cookie = name + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(name) {
+  var cookieName = name + "=";
+  var cookies = document.cookie.split(';');
+
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    while (cookie.charAt(0) === ' ') {
+        cookie = cookie.substring(1);
+}
+    if (cookie.indexOf(cookieName) === 0) {
+      return cookie.substring(cookieName.length, cookie.length);
+    }
+  }
+  return "";
+}
+
+var inputs = [
+    { id: "fname", cookieName: "firstName" },
+    { id: "lname", cookieName: "lastName" },
+    { id: "mini", cookieName: "middleInitial" },
+    { id: "dob", cookieName: "dob" },
+    { id: "ssn", cookieName: "ssn" },
+    { id: "address1", cookieName: "address1" },
+    { id: "city", cookieName: "city" },
+    { id: "state", cookieName: "state" },
+    { id: "zip", cookieName: "zipCode" },
+    { id: "email", cookieName: "email" },
+    { id: "phone", cookieName: "phone" },
+    { id: "uid", cookieName: "userName" },
+];
 inputs.forEach(function (input) {
     var inputElement = document.getElementById(input.id);
 
