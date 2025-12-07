@@ -340,3 +340,96 @@ function validateEverything() {
         showAlert();
      }
  }
+
+inputs.forEach(function (input) {
+    var inputElement = document.getElementById(input.id);
+
+    // If the element isn't present on this page, skip it to avoid exceptions
+    if (!inputElement) return;
+
+    // Prefill input fields
+    var cookieValue = getCookie(input.cookieName);
+    if (cookieValue !== "") {
+        inputElement.value = cookieValue;
+    }
+
+    // Set a cookie when the input field changes
+    inputElement.addEventListener("input", function () {
+        setCookie(input.cookieName, inputElement.value, 30);
+    });
+});
+
+// manage welcome text and header for returning vs new visitors
+var w1 = document.getElementById('welcome1');
+var w2 = document.getElementById('welcome2');
+
+var firstName = getCookie("firstName");
+if (firstName && firstName.trim() !== "") {
+    if (w1) w1.innerHTML = "Welcome back, " + firstName + "!<br>";
+    if (w2) w2.innerHTML = "<a href='#' id='new-user'>Not " + firstName + "? Click here to start a new form.</a>";
+
+    // the anchor with id 'new-user' is added above, so query it now
+    var newUser = document.getElementById('new-user');
+    if (newUser) {
+        newUser.addEventListener('click', function () {
+            inputs.forEach(function (input) {
+                setCookie(input.cookieName, "", -1);
+            });
+            location.reload();
+        });
+    }
+
+    if (headerH2) headerH2.textContent = originalHeaderText;
+} else {
+    // first-time visitor: keep the original clinic heading and show a welcome in the page spans
+    if (w1) w1.innerHTML = 'Welcome to Wani Health Clinic!';
+    if (w2) w2.innerHTML = 'Please fill out the form to register.';
+}
+
+document.getElementById("remember-me").addEventListener("change", function () {
+    const rememberMe = this.checked;
+
+    if (!rememberMe) {
+        // If "Remember Me" is unchecked, delete cookies
+        deleteAllCookies();
+        console.log("All cookies deleted because 'Remember Me' is unchecked.");
+    } else {
+        // If "Remember Me" is checked or rechecked, save cookies
+        inputs.forEach(function (input) {
+            const inputElement = document.getElementById(input.id);
+            if (inputElement.value.trim() !== "") {
+                setCookie(input.cookieName, inputElement.value, 30);
+            }
+        });
+        console.log("Cookies saved because 'Remember Me' is checked.");
+    }
+});
+
+function deleteAllCookies() {
+    document.cookie.split(";").forEach(function (cookie) {
+        let eqPos = cookie.indexOf("=");
+        let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const rememberMe = document.getElementById("remember-me").checked;
+
+    if (!rememberMe) {
+        deleteAllCookies();
+    }
+});
+
+// fetch api health tips
+function getHealthTip() {
+  fetch("https://api.adviceslip.com/advice")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("healthTip").innerText = data.slip.advice;
+    });
+}
+
+
+//log to console that hw4.js is loaded
+console.log('Homework 4 JS loaded');
