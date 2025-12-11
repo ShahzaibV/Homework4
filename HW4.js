@@ -341,6 +341,44 @@ function validateEverything() {
      }
  }
 
+//cookie for remembering information on form//
+function setCookie(name, cvalue, expiryDays) {
+    var day = new Date();
+    day.setTime(day.getTime() + (expiryDays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + day.toUTCString();
+    document.cookie = name + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(name) {
+  var cookieName = name + "=";
+  var cookies = document.cookie.split(';');
+
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    while (cookie.charAt(0) === ' ') {
+        cookie = cookie.substring(1);
+}
+    if (cookie.indexOf(cookieName) === 0) {
+      return cookie.substring(cookieName.length, cookie.length);
+    }
+  }
+  return "";
+}
+
+var inputs = [
+    { id: "fname", cookieName: "firstName" },
+    { id: "lname", cookieName: "lastName" },
+    { id: "mini", cookieName: "middleInitial" },
+    { id: "dob", cookieName: "dob" },
+    { id: "ssn", cookieName: "ssn" },
+    { id: "address1", cookieName: "address1" },
+    { id: "city", cookieName: "city" },
+    { id: "state", cookieName: "state" },
+    { id: "zip", cookieName: "zipCode" },
+    { id: "email", cookieName: "email" },
+    { id: "phone", cookieName: "phone" },
+    { id: "uid", cookieName: "userName" },
+];
 inputs.forEach(function (input) {
     var inputElement = document.getElementById(input.id);
 
@@ -382,7 +420,7 @@ if (firstName && firstName.trim() !== "") {
     if (headerH2) headerH2.textContent = originalHeaderText;
 } else {
     // first-time visitor: keep the original clinic heading and show a welcome in the page spans
-    if (w1) w1.innerHTML = 'Welcome to Wani Health Clinic!';
+    if (w1) w1.innerHTML = 'Welcome to Vohra Wound Physicians!';
     if (w2) w2.innerHTML = 'Please fill out the form to register.';
 }
 
@@ -423,7 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // fetch api health tips
 function getHealthTip() {
-  fetch("https://api.adviceslip.com/advice")
+  fetch("https://odphp.health.gov/myhealthfinder/api/v4/itemlist.json?Type=topic")
     .then(res => res.json())
     .then(data => {
       document.getElementById("healthTip").innerText = data.slip.advice;
